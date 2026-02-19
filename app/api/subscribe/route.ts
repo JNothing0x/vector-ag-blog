@@ -6,9 +6,12 @@ const BEEHIIV_PUB_ID = process.env.BEEHIIV_PUB_ID || 'pub_48f9dbdd-e712-4fc1-994
 const GITHUB_REPO = 'JNothing0x/vector-ag-blog'
 const GITHUB_FILE = 'data/subscribers.json'
 
-async function addToBeehiiv(email: string): Promise<boolean> {
+async function addToBeehiiv(email: string): Promise<{ ok: boolean; error?: string }> {
   const apiKey = process.env.BEEHIIV_API_KEY
-  if (!apiKey) return false
+  if (!apiKey) {
+    console.error('BEEHIIV_API_KEY not set')
+    return { ok: false, error: 'API key not configured' }
+  }
 
   try {
     const res = await fetch(
@@ -28,10 +31,17 @@ async function addToBeehiiv(email: string): Promise<boolean> {
         }),
       }
     )
-    return res.ok
+    
+    if (!res.ok) {
+      const body = await res.text().catch(() => 'unknown')
+      console.error(`Beehiiv API error: ${res.status} ${res.statusText}`, body.slice(0, 200))
+      return { ok: false, error: `Beehiiv ${res.status}: ${body.slice(0, 100)}` }
+    }
+    
+    return { ok: true }
   } catch (err) {
     console.error('Beehiiv error:', err)
-    return false
+    return { ok: false, error: String(err) }
   }
 }
 
@@ -91,16 +101,16 @@ export async function POST(req: Request) {
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
   // 1. Try Beehiiv first (handles welcome email + subscriber management)
-  const beehiivOk = await addToBeehiiv(email)
+  const beehiiv = await addToBeehiiv(email)
 
-  if (beehiivOk) {
+  if (beehiiv.ok) {
     // 2. Also store in GitHub as backup (fire-and-forget)
     addToGitHub(email).catch(console.error)
     return NextResponse.json({ success: true, source: 'beehiiv' })
   }
 
   // Beehiiv failed — try GitHub as fallback
-  console.error(`Beehiiv add failed for ${email}, trying GitHub fallback...`)
+  console.error(`Beehiiv add failed for ${email}: ${beehiiv.error}`)
   const githubOk = await addToGitHub(email)
 
   if (githubOk) {
@@ -109,5 +119,7 @@ export async function POST(req: Request) {
 
   // Both failed
   console.error(`Both Beehiiv and GitHub failed for ${email}`)
-  return NextResponse.json({ error: 'Subscription failed. Please try again.' }, { status: 500 })
+  return NextResponse.json({ 
+    error: beehiiv.error || 'Subscription failed. Please try again.' 
+  }, { status: 500 })
 }
