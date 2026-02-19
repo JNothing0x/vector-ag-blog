@@ -6,7 +6,7 @@ const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Tech Culture Club | AI × Culture',
-  description: 'Where artificial intelligence meets cultural institutions. Case studies, deep dives, and the future of creative work.',
+  description: 'Where artificial intelligence meets cultural institutions. Case studies, deep dives, and frameworks for museums, galleries, and luxury brands.',
   openGraph: {
     title: 'Tech Culture Club',
     description: 'AI × Culture by Vector AG',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${geist.className} bg-neutral-50 text-neutral-900 antialiased`}>
+      <body className={`${geist.className} bg-neutral-950 text-neutral-50 antialiased`}>
         {children}
       </body>
     </html>

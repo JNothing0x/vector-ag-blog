@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import Header from '@/components/Header'
+import { motion } from 'framer-motion'
 
 export default function SubscribePage() {
   const [email, setEmail] = useState('')
@@ -23,54 +25,59 @@ export default function SubscribePage() {
   }
 
   return (
-    <main className="min-h-screen">
-      <header className="border-b border-neutral-200">
-        <div className="max-w-4xl mx-auto px-6 py-6">
-          <Link href="/" className="text-xl font-semibold tracking-tight">
-            Tech Culture Club
-          </Link>
-        </div>
-      </header>
+    <main className="min-h-screen bg-neutral-950">
+      <Header />
 
-      <section className="max-w-lg mx-auto px-6 py-24 text-center">
-        <p className="text-xs uppercase tracking-widest text-neutral-500 mb-4">Vector AG</p>
-        <h1 className="text-4xl font-semibold tracking-tight mb-4">
-          Join the Club
-        </h1>
-        <p className="text-lg text-neutral-600 mb-10">
-          Weekly intelligence on how AI is reshaping museums, galleries, and luxury brands. First 50 members get a free 1:1 AI strategy session.
-        </p>
+      <section className="max-w-lg mx-auto px-5 py-20 sm:py-28">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="text-xs uppercase tracking-widest text-neutral-500 mb-4 font-medium">Vector AG</p>
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4 leading-tight">
+            Join the Club.
+          </h1>
+          <p className="text-base sm:text-lg text-neutral-400 mb-10 leading-relaxed">
+            Weekly intelligence on how AI is reshaping museums, galleries, and luxury brands. First 50 members get a free 1:1 AI strategy session.
+          </p>
 
-        {status === 'success' ? (
-          <div className="bg-neutral-900 text-white rounded-2xl p-8">
-            <p className="text-lg font-medium">You're in. 🎉</p>
-            <p className="text-neutral-400 mt-2">First issue lands next Wednesday.</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              required
-              className="flex-1 px-4 py-3 rounded-full border border-neutral-300 text-sm outline-none focus:border-neutral-900 transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={status === 'loading'}
-              className="bg-neutral-900 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-neutral-700 transition-colors disabled:opacity-50"
+          {status === 'success' ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="border border-neutral-700 rounded-2xl p-8 text-center"
             >
-              {status === 'loading' ? 'Subscribing…' : 'Subscribe Free'}
-            </button>
-          </form>
-        )}
+              <p className="text-2xl mb-2">🎉</p>
+              <p className="text-lg font-semibold text-white">You're in.</p>
+              <p className="text-neutral-500 mt-2 text-sm">First issue lands next Wednesday. Check your inbox.</p>
+            </motion.div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                required
+                className="w-full px-5 py-3.5 rounded-full border border-neutral-700 bg-neutral-900 text-white text-sm placeholder:text-neutral-600 outline-none focus:border-neutral-500 transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="w-full bg-white text-neutral-900 font-semibold px-6 py-3.5 rounded-full text-sm hover:bg-neutral-200 transition-colors disabled:opacity-40"
+              >
+                {status === 'loading' ? 'Subscribing…' : 'Subscribe Free →'}
+              </button>
+            </form>
+          )}
 
-        {status === 'error' && (
-          <p className="text-red-500 text-sm mt-3">Something went wrong. Try again.</p>
-        )}
+          {status === 'error' && (
+            <p className="text-red-400 text-sm mt-3 text-center">Something went wrong. Try again.</p>
+          )}
 
-        <p className="text-xs text-neutral-400 mt-6">No spam. Unsubscribe anytime.</p>
+          <p className="text-xs text-neutral-600 mt-5 text-center">No spam. Unsubscribe anytime.</p>
+        </motion.div>
       </section>
     </main>
   )
