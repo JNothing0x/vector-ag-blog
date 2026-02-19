@@ -23,7 +23,7 @@ export default function Hero() {
         animate="visible"
         className="text-xs uppercase tracking-widest text-neutral-500 mb-5 font-medium"
       >
-        The intersection of AI + culture
+        AI × Culture × The World
       </motion.p>
 
       <motion.h1

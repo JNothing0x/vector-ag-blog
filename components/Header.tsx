@@ -11,7 +11,7 @@ export default function Header() {
       <div className="max-w-4xl mx-auto px-5 py-4 flex items-center justify-between">
         <Link href="/" className="flex flex-col" onClick={() => setOpen(false)}>
           <span className="text-base font-semibold tracking-tight text-white leading-tight">Tech Culture Club</span>
-          <span className="text-xs text-neutral-500">AI × Culture · Vector AG</span>
+          <span className="text-xs text-neutral-500">AI × Culture</span>
         </Link>
 
         {/* Desktop nav */}

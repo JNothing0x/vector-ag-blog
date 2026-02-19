@@ -6,10 +6,10 @@ const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Tech Culture Club | AI × Culture',
-  description: 'Where artificial intelligence meets cultural institutions. Case studies, deep dives, and frameworks for museums, galleries, and luxury brands.',
+  description: 'Where AI meets culture, fashion, luxury, and art. Deep dives and signals from the intersection of technology and creative industries.',
   openGraph: {
     title: 'Tech Culture Club',
-    description: 'AI × Culture by Vector AG',
+    description: 'Where AI meets culture, fashion, and art.',
     type: 'website',
   },
 }

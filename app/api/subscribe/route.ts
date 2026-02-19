@@ -31,7 +31,7 @@ export async function POST(req: Request) {
           <p style="color: #525252; line-height: 1.6; margin-bottom: 32px;">
             First issue lands next Wednesday. Stay curious.
           </p>
-          <p style="color: #171717; font-weight: 500;">— John, Vector AG</p>
+          <p style="color: #171717; font-weight: 500;">— Tech Culture Club</p>
           <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;" />
           <p style="color: #a3a3a3; font-size: 12px;">Tech Culture Club · vector.ag</p>
         </div>

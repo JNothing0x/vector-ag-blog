@@ -34,7 +34,7 @@ export default function SubscribePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-xs uppercase tracking-widest text-neutral-500 mb-4 font-medium">Vector AG</p>
+          <p className="text-xs uppercase tracking-widest text-neutral-500 mb-4 font-medium">Tech Culture Club</p>
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4 leading-tight">
             Join the Club.
           </h1>

@@ -25,7 +25,7 @@ export default async function Home() {
 
       <footer className="border-t border-neutral-800 mt-12">
         <div className="max-w-4xl mx-auto px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-600">
-          <span>© 2026 Vector AG · Tech Culture Club</span>
+          <span>© 2026 Tech Culture Club</span>
           <div className="flex gap-5">
             <a href="/subscribe" className="hover:text-neutral-400 transition-colors">Subscribe</a>
             <a href="/about" className="hover:text-neutral-400 transition-colors">About</a>

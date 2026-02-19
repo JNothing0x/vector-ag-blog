@@ -6,7 +6,7 @@ const topics = [
   'AI × Museums', 'Digital Culture', 'Generative Art',
   'Luxury × AI', 'Gallery Tech', 'Creative Machines',
   'Cultural Intelligence', 'AI Curation', 'Future of Art',
-  'Algorithmic Beauty', 'Human × Machine', 'Vector AG',
+  'Algorithmic Beauty', 'Human × Machine', 'Tech Culture Club',
 ]
 
 function TickerItem({ text }: { text: string }) {
