@@ -1,17 +1,9 @@
-import type { Metadata } from 'next'
+'use client'
 import { useState } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import { motion } from 'framer-motion'
 import { BorderBeam } from '@/components/magicui/border-beam'
-
-export const metadata: Metadata = {
-  title: 'Join the Club — Free AI × Culture Newsletter',
-  description: 'Subscribe to Tech Culture Club. Weekly intelligence on how AI reshapes museums, galleries, and luxury brands. First 50 get a free AI strategy session.',
-  alternates: {
-    canonical: 'https://techcultureclub.vercel.app/subscribe',
-  },
-}
 
 export default function SubscribePage() {
   const [email, setEmail] = useState('')
