@@ -13,8 +13,9 @@ async function getPost(slug: string) {
   return client.fetch(query, { slug })
 }
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug)
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = await getPost(slug)
   if (!post) notFound()
 
   const categoryMap: Record<string, string> = {
