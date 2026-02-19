@@ -1,8 +1,33 @@
+import type { Metadata } from 'next'
 export const dynamic = 'force-dynamic'
 import { client } from '@/lib/sanity'
 import Header from '@/components/Header'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getPost(slug)
+  if (!post) {
+    return { title: 'Post Not Found | Tech Culture Club' }
+  }
+  return {
+    title: `${post.title} | Tech Culture Club`,
+    description: post.excerpt || `${post.title} — analysis from Tech Culture Club on AI and culture.`,
+    authors: [{ name: 'John', url: 'https://techcultureclub.vercel.app/about' }],
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.publishedAt,
+      authors: ['John'],
+      url: `https://techcultureclub.vercel.app/posts/${slug}`,
+    },
+    alternates: {
+      canonical: `https://techcultureclub.vercel.app/posts/${slug}`,
+    },
+  }
+}
 
 async function getPost(slug: string) {
   const query = `*[_type == "post" && slug.current == $slug][0] {
@@ -50,6 +75,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <span>{categoryLabel}</span>
           <span>·</span>
           <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+          <span>·</span>
+          <Link href="/about" className="hover:text-white transition-colors">By John</Link>
         </div>
 
         <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white leading-tight mb-5">

@@ -1,8 +1,16 @@
+import type { Metadata } from 'next'
 export const dynamic = 'force-dynamic'
 import { client } from '@/lib/sanity'
 import Header from '@/components/Header'
 import PostList from '@/components/PostList'
-import { motion } from 'framer-motion'
+
+export const metadata: Metadata = {
+  title: 'Archive — Every Issue | Tech Culture Club',
+  description: 'Browse all Tech Culture Club posts. Deep dives on AI, culture, fashion, luxury, and art.',
+  alternates: {
+    canonical: 'https://techcultureclub.vercel.app/posts',
+  },
+}
 
 async function getAllPosts() {
   const query = `*[_type == "post"] | order(publishedAt desc) {

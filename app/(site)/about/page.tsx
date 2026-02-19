@@ -45,6 +45,21 @@ export default function AboutPage() {
         </motion.div>
 
         <motion.div custom={3} variants={fadeUp} initial="hidden" animate="visible"
+          className="mt-8 p-6 bg-neutral-900 border border-neutral-800 rounded-xl">
+          <p className="text-xs uppercase tracking-widest text-neutral-500 mb-3 font-medium">Curated by</p>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center text-lg">J</div>
+            <div>
+              <p className="font-medium text-white">John</p>
+              <p className="text-sm text-neutral-500 mt-1">
+                Tracking how AI reshapes creative industries. Former strategy consultant, now full-time observer 
+                of the intersection between technology and culture. Based in Switzerland, writing for a global audience.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div custom={4} variants={fadeUp} initial="hidden" animate="visible"
           className="mt-12 pt-8 border-t border-neutral-800">
           <p className="text-sm text-neutral-500 mb-2 uppercase tracking-widest font-medium">We track</p>
           <div className="flex flex-wrap gap-2 mt-4">
@@ -61,7 +76,7 @@ export default function AboutPage() {
           </div>
         </motion.div>
 
-        <motion.div custom={4} variants={fadeUp} initial="hidden" animate="visible"
+        <motion.div custom={5} variants={fadeUp} initial="hidden" animate="visible"
           className="mt-12">
           <Link href="/subscribe"
             className="inline-block bg-white text-neutral-900 font-semibold px-6 py-3 rounded-full text-sm hover:bg-neutral-200 transition-colors">
@@ -72,8 +87,12 @@ export default function AboutPage() {
       </div>
 
       <footer className="border-t border-neutral-800 mt-12">
-        <div className="max-w-4xl mx-auto px-5 py-8 text-xs text-neutral-600">
-          © 2026 Tech Culture Club
+        <div className="max-w-4xl mx-auto px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-600">
+          <span>© 2026 Tech Culture Club — by John</span>
+          <div className="flex gap-5">
+            <a href="/subscribe" className="hover:text-neutral-400 transition-colors">Subscribe</a>
+            <a href="/privacy" className="hover:text-neutral-400 transition-colors">Privacy</a>
+          </div>
         </div>
       </footer>
     </main>
