@@ -78,7 +78,13 @@ export default function SubscribePage() {
             <p className="text-red-400 text-sm mt-3 text-center">Something went wrong. Try again.</p>
           )}
 
-          <p className="text-xs text-neutral-600 mt-5 text-center">No spam. Unsubscribe anytime.</p>
+          <p className="text-xs text-neutral-600 mt-5 text-center leading-relaxed">
+            By subscribing you agree to our{' '}
+            <a href="https://www.beehiiv.com/tou" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-400 transition-colors">Terms</a>
+            {' '}&amp;{' '}
+            <a href="https://www.beehiiv.com/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-400 transition-colors">Privacy Policy</a>.
+            {' '}No spam. Unsubscribe anytime.
+          </p>
         </motion.div>
       </section>
     </main>
