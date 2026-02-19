@@ -22,7 +22,7 @@ async function storeSubscriberGitHub(email: string): Promise<boolean> {
     const getRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, { headers })
     const fileData = await getRes.json()
     const sha = fileData.sha
-    const currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString())
+    const currentContent = JSON.parse(Buffer.from(fileData.content.replace(/\n/g, ''), 'base64').toString('utf8'))
 
     // Check duplicate
     if (currentContent.subscribers.some((s: { email: string }) => s.email === email)) {
