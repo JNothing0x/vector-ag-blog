@@ -3,6 +3,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import { motion } from 'framer-motion'
+import { BorderBeam } from '@/components/magicui/border-beam'
+import { ShimmerButton } from '@/components/magicui/shimmer-button'
 
 export default function SubscribePage() {
   const [email, setEmail] = useState('')
@@ -46,8 +48,9 @@ export default function SubscribePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="border border-neutral-700 rounded-2xl p-8 text-center"
+              className="relative border border-neutral-700 rounded-2xl p-8 text-center overflow-hidden"
             >
+              <BorderBeam size={80} duration={4} colorFrom="#a3a3a3" colorTo="#404040" />
               <p className="text-2xl mb-2">🎉</p>
               <p className="text-lg font-semibold text-white">You're in.</p>
               <p className="text-neutral-500 mt-2 text-sm">First issue lands next Wednesday. Check your inbox.</p>
@@ -62,13 +65,16 @@ export default function SubscribePage() {
                 required
                 className="w-full px-5 py-3.5 rounded-full border border-neutral-700 bg-neutral-900 text-white text-sm placeholder:text-neutral-600 outline-none focus:border-neutral-500 transition-colors"
               />
-              <button
+              <ShimmerButton
                 type="submit"
                 disabled={status === 'loading'}
-                className="w-full bg-white text-neutral-900 font-semibold px-6 py-3.5 rounded-full text-sm hover:bg-neutral-200 transition-colors disabled:opacity-40"
+                background="rgba(255,255,255,1)"
+                shimmerColor="#a3a3a3"
+                className="w-full text-neutral-900 disabled:opacity-40"
+                style={{ color: '#0a0a0a', borderRadius: '9999px' }}
               >
                 {status === 'loading' ? 'Subscribing…' : 'Subscribe Free →'}
-              </button>
+              </ShimmerButton>
             </form>
           )}
 
