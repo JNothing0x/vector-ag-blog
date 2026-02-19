@@ -9,18 +9,27 @@ export default function SubscribePage() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
+  const [errorMsg, setErrorMsg] = useState('')
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('loading')
+    setErrorMsg('')
     try {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       })
-      if (res.ok) setStatus('success')
-      else setStatus('error')
+      if (res.ok) {
+        setStatus('success')
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setErrorMsg(data.error || 'Something went wrong. Please try again.')
+        setStatus('error')
+      }
     } catch {
+      setErrorMsg('Network error. Please check your connection.')
       setStatus('error')
     }
   }
@@ -75,7 +84,7 @@ export default function SubscribePage() {
           )}
 
           {status === 'error' && (
-            <p className="text-red-400 text-sm mt-3 text-center">Something went wrong. Try again.</p>
+            <p className="text-red-400 text-sm mt-3 text-center">{errorMsg || 'Something went wrong. Try again.'}</p>
           )}
 
           <p className="text-xs text-neutral-600 mt-5 text-center leading-relaxed">

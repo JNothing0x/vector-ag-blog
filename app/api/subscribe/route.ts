@@ -90,15 +90,24 @@ export async function POST(req: Request) {
   const { email } = await req.json()
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
-  // 1. Add to Beehiiv (handles welcome email + subscriber management)
+  // 1. Try Beehiiv first (handles welcome email + subscriber management)
   const beehiivOk = await addToBeehiiv(email)
 
-  // 2. Also store in GitHub as backup
-  addToGitHub(email).catch(console.error) // fire-and-forget
-
-  if (!beehiivOk) {
-    console.error(`Beehiiv add failed for ${email}`)
+  if (beehiivOk) {
+    // 2. Also store in GitHub as backup (fire-and-forget)
+    addToGitHub(email).catch(console.error)
+    return NextResponse.json({ success: true, source: 'beehiiv' })
   }
 
-  return NextResponse.json({ success: true })
+  // Beehiiv failed — try GitHub as fallback
+  console.error(`Beehiiv add failed for ${email}, trying GitHub fallback...`)
+  const githubOk = await addToGitHub(email)
+
+  if (githubOk) {
+    return NextResponse.json({ success: true, source: 'github', message: 'Subscribed (welcome email pending)' })
+  }
+
+  // Both failed
+  console.error(`Both Beehiiv and GitHub failed for ${email}`)
+  return NextResponse.json({ error: 'Subscription failed. Please try again.' }, { status: 500 })
 }
