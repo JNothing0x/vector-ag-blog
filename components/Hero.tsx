@@ -4,7 +4,6 @@ import type { Variants } from 'framer-motion'
 import Link from 'next/link'
 import ScrambleText from '@/components/ScrambleText'
 import { Particles } from '@/components/magicui/particles'
-import { ShimmerButton } from '@/components/magicui/shimmer-button'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -55,19 +54,15 @@ export default function Hero() {
         custom={3} variants={fadeUp} initial="hidden" animate="visible"
         className="flex flex-col sm:flex-row gap-3"
       >
-        <Link href="/subscribe">
-          <ShimmerButton
-            shimmerColor="#ffffff"
-            background="rgba(255,255,255,1)"
-            className="text-neutral-900 border-white/20 font-semibold w-full sm:w-auto"
-            style={{ color: '#0a0a0a' }}
-          >
-            Join the Club — Free →
-          </ShimmerButton>
+        <Link
+          href="/subscribe"
+          className="inline-flex items-center justify-center bg-white text-neutral-900 font-semibold px-7 py-3.5 rounded-full text-sm hover:bg-neutral-100 active:scale-95 transition-all duration-200 w-full sm:w-auto"
+        >
+          Join the Club — Free →
         </Link>
         <Link
           href="/posts"
-          className="inline-block border border-neutral-700 text-neutral-300 font-medium px-6 py-3 rounded-full text-sm hover:border-neutral-500 hover:text-white transition-colors text-center"
+          className="inline-flex items-center justify-center border border-neutral-700 text-neutral-300 font-medium px-6 py-3.5 rounded-full text-sm hover:border-neutral-500 hover:text-white transition-colors w-full sm:w-auto"
         >
           Browse Archive
         </Link>
