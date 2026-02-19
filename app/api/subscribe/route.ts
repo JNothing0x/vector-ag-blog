@@ -16,25 +16,65 @@ export async function POST(req: Request) {
     }
 
     await resend.emails.send({
-      from: 'John @ Tech Culture Club <onboarding@resend.dev>',
+      from: 'Tech Culture Club <onboarding@resend.dev>',
       to: email,
-      subject: 'Welcome to Tech Culture Club 🎉',
+      subject: 'Welcome to Tech Culture Club',
       html: `
-        <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px; color: #171717;">
-          <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 16px;">Welcome to the Club.</h1>
-          <p style="color: #525252; line-height: 1.6; margin-bottom: 16px;">
-            You're now part of a small group of people who believe AI and culture can coexist beautifully.
-          </p>
-          <p style="color: #525252; line-height: 1.6; margin-bottom: 16px;">
-            Every week, I break down how AI is reshaping museums, galleries, and luxury brands — with case studies, frameworks, and things you can actually use.
-          </p>
-          <p style="color: #525252; line-height: 1.6; margin-bottom: 32px;">
-            First issue lands next Wednesday. Stay curious.
-          </p>
-          <p style="color: #171717; font-weight: 500;">— Tech Culture Club</p>
-          <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;" />
-          <p style="color: #a3a3a3; font-size: 12px;">Tech Culture Club · vector.ag</p>
-        </div>
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0a;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+
+        <!-- Header -->
+        <tr>
+          <td style="padding-bottom:32px;border-bottom:1px solid #262626;">
+            <p style="margin:0;font-size:14px;font-weight:600;color:#ffffff;letter-spacing:-0.3px;">Tech Culture Club</p>
+            <p style="margin:4px 0 0;font-size:11px;color:#525252;text-transform:uppercase;letter-spacing:0.1em;">AI × Culture</p>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:40px 0 32px;">
+            <h1 style="margin:0 0 20px;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.5px;">
+              Welcome to the Club.
+            </h1>
+            <p style="margin:0 0 16px;font-size:15px;color:#a3a3a3;line-height:1.7;">
+              You're in. Every week, you'll get deep dives on how AI is reshaping the institutions that define culture — museums, galleries, luxury houses, fashion brands.
+            </p>
+            <p style="margin:0 0 16px;font-size:15px;color:#a3a3a3;line-height:1.7;">
+              Not the hype. Not every model release. The <em style="color:#e5e5e5;">implications</em> — for creativity, for collections, for the humans who make things that last.
+            </p>
+            <p style="margin:0 0 32px;font-size:15px;color:#a3a3a3;line-height:1.7;">
+              First issue lands soon. Stay curious.
+            </p>
+
+            <!-- CTA -->
+            <a href="https://techcultureclub.vercel.app/posts"
+               style="display:inline-block;background:#ffffff;color:#0a0a0a;font-size:14px;font-weight:600;padding:12px 24px;border-radius:100px;text-decoration:none;">
+              Browse the Archive →
+            </a>
+          </td>
+        </tr>
+
+        <!-- Divider -->
+        <tr>
+          <td style="border-top:1px solid #262626;padding-top:24px;">
+            <p style="margin:0;font-size:11px;color:#404040;line-height:1.6;">
+              © 2026 Tech Culture Club · <a href="https://techcultureclub.vercel.app" style="color:#525252;">techcultureclub.vercel.app</a><br>
+              You're receiving this because you subscribed. <a href="#" style="color:#525252;">Unsubscribe</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
       `
     })
 

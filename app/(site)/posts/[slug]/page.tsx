@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic'
 import { client } from '@/lib/sanity'
-import { PortableText } from '@portabletext/react'
 import Header from '@/components/Header'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -11,6 +10,23 @@ async function getPost(slug: string) {
     "coverImage": coverImage.asset->url
   }`
   return client.fetch(query, { slug })
+}
+
+function RenderBlocks({ blocks }: { blocks: any[] }) {
+  if (!blocks?.length) return null
+  return (
+    <div className="space-y-5">
+      {blocks.map((block, i) => {
+        const text = block.children?.map((c: any) => c.text).join('') || ''
+        if (!text) return null
+        switch (block.style) {
+          case 'h2': return <h2 key={i} className="text-xl sm:text-2xl font-semibold text-white mt-8 mb-3">{text}</h2>
+          case 'h3': return <h3 key={i} className="text-lg font-semibold text-white mt-6 mb-2">{text}</h3>
+          default:   return <p key={i} className="text-neutral-300 leading-relaxed">{text}</p>
+        }
+      })}
+    </div>
+  )
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -36,10 +52,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white leading-tight mb-5">{post.title}</h1>
+        <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white leading-tight mb-5">
+          {post.title}
+        </h1>
 
         {post.excerpt && (
-          <p className="text-base sm:text-lg text-neutral-400 leading-relaxed mb-8 border-l-2 border-neutral-700 pl-4">{post.excerpt}</p>
+          <p className="text-base sm:text-lg text-neutral-400 leading-relaxed mb-10 border-l-2 border-neutral-700 pl-4">
+            {post.excerpt}
+          </p>
         )}
 
         {post.coverImage && (
@@ -48,14 +68,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           </div>
         )}
 
-        <div className="prose prose-invert prose-neutral max-w-none prose-p:text-neutral-300 prose-headings:text-white prose-a:text-white prose-strong:text-white">
-          {post.content && <PortableText value={post.content} />}
-        </div>
+        <RenderBlocks blocks={post.content} />
 
         {post.tags?.length > 0 && (
           <div className="mt-10 pt-6 border-t border-neutral-800 flex flex-wrap gap-2">
             {post.tags.map((tag: string) => (
-              <span key={tag} className="text-xs bg-neutral-800 text-neutral-400 px-3 py-1 rounded-full">{tag}</span>
+              <span key={tag} className="text-xs bg-neutral-800 text-neutral-400 px-3 py-1 rounded-full">
+                {tag}
+              </span>
             ))}
           </div>
         )}
