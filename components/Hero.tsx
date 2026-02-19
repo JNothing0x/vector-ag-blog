@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import Link from 'next/link'
+import ScrambleText from './ScrambleText'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -32,8 +33,14 @@ export default function Hero() {
         animate="visible"
         className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] text-white mb-6"
       >
-        Where artificial<br className="hidden sm:block" /> intelligence{' '}
-        <span className="text-neutral-500">meets cultural institutions.</span>
+        Where{' '}
+        <ScrambleText
+          text="artificial intelligence"
+          delay={400}
+          className="text-neutral-400"
+        />
+        <br />
+        meets cultural institutions.
       </motion.h1>
 
       <motion.p

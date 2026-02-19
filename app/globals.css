@@ -28,6 +28,15 @@ body {
   position: relative;
 }
 
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
+.animate-ticker {
+  animation: ticker 28s linear infinite;
+}
+
 .noise-bg::before {
   content: '';
   position: absolute;
