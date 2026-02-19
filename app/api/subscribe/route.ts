@@ -1,26 +1,55 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { Client } from 'pg'
 
 export const dynamic = 'force-dynamic'
 
-async function storeSubscriber(email: string) {
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 5000,
-  })
+const GITHUB_REPO = 'JNothing0x/vector-ag-blog'
+const GITHUB_FILE = 'data/subscribers.json'
+
+async function storeSubscriberGitHub(email: string): Promise<boolean> {
+  const token = process.env.GITHUB_TOKEN
+  if (!token) return false
+
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json',
+  }
+
   try {
-    await client.connect()
-    await client.query(
-      `INSERT INTO subscribers (email, source) VALUES ($1, $2) ON CONFLICT (email) DO NOTHING`,
-      [email, 'website']
-    )
-    await client.end()
-    return true
+    // Get current file
+    const getRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, { headers })
+    const fileData = await getRes.json()
+    const sha = fileData.sha
+    const currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString())
+
+    // Check duplicate
+    if (currentContent.subscribers.some((s: { email: string }) => s.email === email)) {
+      return true // already exists
+    }
+
+    // Append new subscriber
+    currentContent.subscribers.push({
+      email,
+      subscribedAt: new Date().toISOString(),
+      source: 'website'
+    })
+
+    // Commit back
+    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `feat: new subscriber ${email.split('@')[0]}@***`,
+        content: Buffer.from(JSON.stringify(currentContent, null, 2)).toString('base64'),
+        sha
+      })
+    })
+
+    return updateRes.ok
   } catch (err) {
-    console.error('Supabase store error:', err)
-    try { await client.end() } catch {}
+    console.error('GitHub store error:', err)
     return false
   }
 }
@@ -29,24 +58,30 @@ export async function POST(req: Request) {
   const { email } = await req.json()
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
-  // 1. Store to Supabase
-  const stored = await storeSubscriber(email)
-  console.log(`Subscriber ${email} stored: ${stored}`)
+  // 1. Store to GitHub (works from Vercel serverless)
+  const stored = await storeSubscriberGitHub(email)
+  console.log(`Subscriber ${email} stored in GitHub: ${stored}`)
 
-  // 2. Notify owner (always works — Resend sandbox allows sending to verified email)
+  // 2. Notify owner (Resend sandbox — always works to verified email)
   const resend = new Resend(process.env.RESEND_API_KEY)
   try {
     await resend.emails.send({
       from: 'Tech Culture Club <onboarding@resend.dev>',
       to: 'john.commandcenter@gmail.com',
       subject: `🎉 New subscriber: ${email}`,
-      html: `<p style="font-family:sans-serif">New subscriber joined Tech Culture Club:</p><p style="font-family:sans-serif;font-size:18px;font-weight:bold">${email}</p><p style="font-family:sans-serif;color:#666">${new Date().toLocaleString('en-GB', {timeZone:'Europe/Zurich'})}</p>`
+      html: `
+        <div style="font-family:sans-serif;padding:20px">
+          <h2>New TCC Subscriber</h2>
+          <p><strong>${email}</strong></p>
+          <p style="color:#666">${new Date().toLocaleString('en-GB', { timeZone: 'Europe/Zurich' })} CET</p>
+          <p style="color:#666">Total stored in GitHub: ${stored ? 'yes' : 'failed'}</p>
+        </div>`
     })
   } catch (err) {
-    console.error('Owner notify error:', err)
+    console.error('Notify error:', err)
   }
 
-  // 3. Welcome email to subscriber (requires verified domain — will fail in sandbox for non-owner emails)
+  // 3. Welcome email (will work once domain is verified in Resend)
   try {
     await resend.emails.send({
       from: 'Tech Culture Club <onboarding@resend.dev>',
