@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { client } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
@@ -22,11 +23,12 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const post = await getPost(params.slug)
   if (!post) notFound()
 
-  const categoryLabel = {
+  const categoryMap: Record<string, string> = {
     impulse: 'Impulse Talk',
     deep: 'Deep Discussion',
     case: 'Case Breakdown'
-  }[post.category] || post.category
+  }
+  const categoryLabel = categoryMap[post.category] || post.category
 
   return (
     <main className="min-h-screen">
