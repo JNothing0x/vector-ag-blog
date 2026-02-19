@@ -5,8 +5,11 @@ import './globals.css'
 const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Tech Culture Club — AI × Culture, Fashion & Luxury',
-  description: 'Where AI meets culture, fashion, luxury, and art. Deep dives and signals from the intersection of technology and creative industries.',
+  title: {
+    default: 'Tech Culture Club — AI × Culture, Fashion & Luxury',
+    template: '%s | Tech Culture Club',
+  },
+  description: 'Weekly intelligence on how AI reshapes museums, galleries, and luxury brands. Deep dives at the intersection of technology and creative industries.',
   keywords: ['AI', 'culture', 'fashion', 'luxury', 'art', 'generative AI', 'creative industry'],
   authors: [{ name: 'John', url: 'https://techcultureclub.vercel.app/about' }],
   creator: 'John',
