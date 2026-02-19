@@ -1,20 +1,37 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { Pool } from 'pg'
 
 export const dynamic = 'force-dynamic'
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+  max: 1,
+})
 
 export async function POST(req: Request) {
   const { email } = await req.json()
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
+  // 1. Store subscriber in Supabase (source of truth)
+  try {
+    const client = await pool.connect()
+    await client.query(
+      `INSERT INTO subscribers (email, source) VALUES ($1, $2)
+       ON CONFLICT (email) DO NOTHING`,
+      [email, 'website']
+    )
+    client.release()
+  } catch (err) {
+    console.error('DB error:', err)
+    // non-fatal — still send welcome email
+  }
+
+  // 2. Send welcome email via Resend
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   try {
-    const audienceId = process.env.RESEND_AUDIENCE_ID
-    if (audienceId) {
-      await resend.contacts.create({ email, audienceId, unsubscribed: false })
-    }
-
     await resend.emails.send({
       from: 'Tech Culture Club <onboarding@resend.dev>',
       to: email,
@@ -77,10 +94,9 @@ export async function POST(req: Request) {
 </html>
       `
     })
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json({ error: 'Subscription failed' }, { status: 500 })
+  } catch (err) {
+    console.error('Email error:', err)
   }
+
+  return NextResponse.json({ success: true })
 }
