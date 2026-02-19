@@ -4,7 +4,7 @@ import { structureTool } from 'sanity/structure'
 import post from './schemas/post'
 
 export const config = defineConfig({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'placeholder',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vto6zswf',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   title: 'Tech Culture Club',
   apiVersion: '2024-02-19',

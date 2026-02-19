@@ -5,7 +5,6 @@ import Hero from '@/components/Hero'
 import Link from 'next/link'
 
 async function getPosts() {
-  if (!client) return []
   const query = `*[_type == "post"] | order(publishedAt desc) {
     _id, title, slug, excerpt, category, publishedAt,
     "coverImage": coverImage.asset->url

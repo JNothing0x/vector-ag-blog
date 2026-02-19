@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 async function getPost(slug: string) {
-  if (!client) return null
   const query = `*[_type == "post" && slug.current == $slug][0] {
     _id, title, slug, excerpt, category, publishedAt, content, tags,
     "coverImage": coverImage.asset->url
