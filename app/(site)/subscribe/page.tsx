@@ -56,15 +56,17 @@ export default function SubscribePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="relative border border-neutral-700 rounded-2xl p-8 text-center overflow-hidden"
+              className="relative border border-neutral-700 rounded-2xl p-8 text-center overflow-hidden bg-neutral-900/50"
             >
               <BorderBeam size={80} duration={4} colorFrom="#a3a3a3" colorTo="#404040" />
-              <p className="text-2xl mb-2">🎉</p>
-              <p className="text-lg font-semibold text-white">You're in.</p>
-              <p className="text-neutral-500 mt-2 text-sm">First issue lands next Wednesday. Check your inbox.</p>
+              <div className="relative z-10">
+                <p className="text-2xl mb-2">🎉</p>
+                <p className="text-lg font-semibold text-white">You're in.</p>
+                <p className="text-neutral-400 mt-2 text-sm">First issue lands next Wednesday. Check your inbox.</p>
+              </div>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 relative z-10">
               <input
                 type="email"
                 value={email}
