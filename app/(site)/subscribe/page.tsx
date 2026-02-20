@@ -1,38 +1,17 @@
 'use client'
-import { useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import { motion } from 'framer-motion'
-import { BorderBeam } from '@/components/magicui/border-beam'
 
 export default function SubscribePage() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-
-  const [errorMsg, setErrorMsg] = useState('')
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('loading')
-    setErrorMsg('')
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      })
-      if (res.ok) {
-        setStatus('success')
-      } else {
-        const data = await res.json().catch(() => ({}))
-        setErrorMsg(data.error || 'Something went wrong. Please try again.')
-        setStatus('error')
-      }
-    } catch {
-      setErrorMsg('Network error. Please check your connection.')
-      setStatus('error')
-    }
-  }
+  useEffect(() => {
+    // Redirect to Substack after a brief moment
+    const timer = setTimeout(() => {
+      window.location.href = 'https://techcultureclub.substack.com/subscribe'
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <main className="min-h-screen bg-neutral-950">
@@ -48,53 +27,38 @@ export default function SubscribePage() {
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4 leading-tight">
             Join the Club.
           </h1>
-          <p className="text-base sm:text-lg text-neutral-400 mb-10 leading-relaxed">
-            Weekly intelligence on how AI is reshaping museums, galleries, and luxury brands. First 50 members get a free 1:1 AI strategy session.
+          <p className="text-base sm:text-lg text-neutral-400 mb-8 leading-relaxed">
+            Weekly intelligence on how AI is reshaping museums, galleries, and luxury brands.
           </p>
 
-          {status === 'success' ? (
+          <div className="text-center py-8">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="relative border border-neutral-700 rounded-2xl p-8 text-center overflow-hidden bg-neutral-900/50"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+              className="inline-block w-8 h-8 border-2 border-neutral-600 border-t-white rounded-full mb-4"
+            />
+            <p className="text-neutral-400 text-sm">Redirecting to Substack...</p>
+          </div>
+
+          <div className="text-center mt-6">
+            <a
+              href="https://techcultureclub.substack.com/subscribe"
+              className="inline-block bg-white text-neutral-900 font-semibold px-6 py-3 rounded-full text-sm hover:bg-neutral-200 transition-colors"
             >
-              <BorderBeam size={80} duration={4} colorFrom="#a3a3a3" colorTo="#404040" />
-              <div className="relative z-10">
-                <p className="text-2xl mb-2">🎉</p>
-                <p className="text-lg font-semibold text-white">You're in.</p>
-                <p className="text-neutral-400 mt-2 text-sm">First issue lands next Wednesday. Check your inbox.</p>
-              </div>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3 relative z-10">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="w-full px-5 py-3.5 rounded-full border border-neutral-700 bg-neutral-900 text-white text-sm placeholder:text-neutral-600 outline-none focus:border-neutral-500 transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="w-full bg-white text-neutral-900 font-semibold px-6 py-3.5 rounded-full text-sm hover:bg-neutral-100 active:scale-95 transition-all disabled:opacity-40"
-              >
-                {status === 'loading' ? 'Subscribing…' : 'Subscribe Free →'}
-              </button>
-            </form>
-          )}
+              Subscribe on Substack →
+            </a>
+          </div>
 
-          {status === 'error' && (
-            <p className="text-red-400 text-sm mt-3 text-center">{errorMsg || 'Something went wrong. Try again.'}</p>
-          )}
-
-          <p className="text-xs text-neutral-600 mt-5 text-center leading-relaxed">
-            By subscribing you agree to our{' '}
-            <a href="https://www.beehiiv.com/tou" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-400 transition-colors">Terms</a>
-            {' '}&amp;{' '}
-            <a href="https://www.beehiiv.com/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-400 transition-colors">Privacy Policy</a>.
-            {' '}No spam. Unsubscribe anytime.
+          <p className="text-xs text-neutral-600 mt-8 text-center">
+            Or go directly to{' '}
+            <a
+              href="https://techcultureclub.substack.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-neutral-400 transition-colors"
+            >
+              techcultureclub.substack.com
+            </a>
           </p>
         </motion.div>
       </section>
